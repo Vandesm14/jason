@@ -12,9 +12,11 @@
     "format:check": "prettier -c \"**/*.{ts,tsx,html}\""
   },
   "dependencies": {
+    "@blueprintjs/core": "^4.17.2",
     "jmespath": "^0.16.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-json-view": "^1.21.3"
   },
   "devDependencies": {
     "@types/jmespath": "^0.15.0",
