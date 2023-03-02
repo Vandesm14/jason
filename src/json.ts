@@ -9,9 +9,7 @@ export function flattenJSON(json: Array<Record<string, any>>): Column[] {
   json.forEach((record) => {
     const { data, ...rest } = record;
     const flattenedData = Object.keys(data).reduce((acc, key) => {
-      const value = Array.isArray(data[key])
-        ? JSON.stringify(data[key])
-        : data[key].toString();
+      const value = Array.isArray(data[key]) ? data[key] : data[key];
       return { ...acc, [`data.${key}`]: value };
     }, {});
 
