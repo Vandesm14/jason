@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "@blueprintjs/core": "^4.17.2",
+    "@blueprintjs/popover2": "^1.13.8",
+    "@blueprintjs/table": "^4.8.4",
     "jmespath": "^0.16.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
