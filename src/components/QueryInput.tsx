@@ -1,7 +1,7 @@
 import React from 'react';
 import { search } from 'jmespath';
-import { InputGroup } from '@blueprintjs/core';
 import { flex } from '../compose/styles';
+import useLocalStorageState from 'use-local-storage-state';
 
 interface QueryInputProps {
   onChange?: (result: object) => void;
@@ -9,7 +9,9 @@ interface QueryInputProps {
 }
 
 export function QueryInput({ onChange, json }: QueryInputProps) {
-  const [query, setQuery] = React.useState('*');
+  const [query, setQuery] = useLocalStorageState('query', {
+    defaultValue: '*',
+  });
 
   const handleSearch = (json: object, query: string) => {
     try {
@@ -21,8 +23,8 @@ export function QueryInput({ onChange, json }: QueryInputProps) {
   };
 
   React.useEffect(() => {
-    setQuery('*');
-    handleSearch(json ?? {}, '*');
+    // If the value exists in local storage, we can run the query
+    handleSearch(json ?? {}, query);
   }, [json]);
 
   return (
@@ -39,7 +41,7 @@ export function QueryInput({ onChange, json }: QueryInputProps) {
         }}
         style={{
           width: '100%',
-          height: '30rem',
+          height: '10rem',
           resize: 'vertical',
         }}
       />
