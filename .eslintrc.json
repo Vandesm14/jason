@@ -1,0 +1,18 @@
+{
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "plugins": ["unused-imports", "@typescript-eslint"],
+  "parser": "@typescript-eslint/parser",
+  "ignorePatterns": ["jest.config.js"],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "error",
+    // "unused-imports/no-unused-imports": "error", // this gives a duplicate error for the one above
+    "no-duplicate-imports": "warn",
+    "no-console": "warn",
+    "no-duplicate-case": "warn",
+    "no-empty": "warn",
+    "no-lonely-if": "warn",
+    "prefer-const": "warn",
+    "no-unused-expressions": "warn",
+    "no-unused-labels": "warn"
+  }
+}
