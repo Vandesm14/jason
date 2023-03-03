@@ -284,6 +284,7 @@ export function fn<T, E extends Error>(f: () => T): Result<T, E> {
   try {
     return f();
   } catch (e) {
+    // @ts-expect-error: this is an error upstream
     return e;
   }
 }
