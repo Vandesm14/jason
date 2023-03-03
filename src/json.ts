@@ -3,29 +3,44 @@ export interface Column {
   values: (any | undefined)[];
 }
 
-export function flattenJSON(json: Array<Record<string, any>>): Column[] {
-  const columns: { [key: string]: string[] } = {};
+export function flattenJSON(
+  json: Record<string, any>[]
+): { key: string; values: string[] }[] {
+  const columns: { [key: string]: any[] } = {};
+
+  function flattenObject(obj: Record<string, any>, prefix = ''): void {
+    Object.entries(obj).forEach(([key, value]) => {
+      const fullKey = prefix ? `${prefix}.${key}` : key;
+
+      if (
+        value !== null &&
+        typeof value === 'object' &&
+        !Array.isArray(value)
+      ) {
+        flattenObject(value, fullKey);
+        // } else {
+        // const stringValue = Array.isArray(value)
+        //   ? JSON.stringify(value)
+        //   : value?.toString();
+        // if (!columns[fullKey]) {
+        //   columns[fullKey] = [];
+        // }
+        // columns[fullKey].push(stringValue);
+      } else if (Array.isArray(value)) {
+        if (!columns[fullKey]) columns[fullKey] = [];
+        columns[fullKey].push(value);
+      } else {
+        if (!columns[fullKey]) columns[fullKey] = [];
+        columns[fullKey].push(value);
+      }
+    });
+  }
 
   json.forEach((record) => {
-    const { data, ...rest } = record;
-    const flattenedData = Object.keys(data).reduce((acc, key) => {
-      const value = Array.isArray(data[key]) ? data[key] : data[key];
-      return { ...acc, [`data.${key}`]: value };
-    }, {});
-
-    const allColumns: Record<string, any> = { ...rest, ...flattenedData };
-
-    Object.keys(allColumns).forEach((key) => {
-      if (!columns[key]) {
-        columns[key] = [];
-      }
-      columns[key].push(allColumns[key]);
-    });
+    flattenObject(record);
   });
 
-  return Object.keys(columns)
-    .map((key) => ({ key, values: columns[key] }))
-    .sort((a, b) => a.key.localeCompare(b.key));
+  return Object.keys(columns).map((key) => ({ key, values: columns[key] }));
 }
 
 //                          path  , type
@@ -36,7 +51,6 @@ export function guessSchema(columns: Column[]): Schema {
 
   columns.forEach((column) => {
     const { key, values } = column;
-
     const type = guessType(values);
 
     schema[key] = type;
@@ -60,7 +74,7 @@ export function guessType(values: (any | undefined)[]): string {
       return 'boolean';
     }
     if (Array.isArray(value)) {
-      return 'array';
+      return `Array<${guessType(value)}>`;
     }
     if (typeof value === 'object') {
       return 'object';

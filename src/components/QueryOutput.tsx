@@ -18,14 +18,13 @@ export function QueryOutput({ result, json }: QueryOutputProps) {
 
   React.useEffect(() => {
     try {
-      if (!Array.isArray(result) || result.length === 0)
-        throw new Error('Not an array');
-
-      let newTable = flattenJSON(result);
+      let array = Array.isArray(result) ? result : [result];
+      let newTable = flattenJSON(array);
 
       setTable(newTable);
       setSchema(guessSchema(newTable));
-    } catch {
+    } catch (e) {
+      console.error(e);
       setTable(null);
     }
   }, [result, json]);
@@ -43,12 +42,14 @@ export function QueryOutput({ result, json }: QueryOutputProps) {
           ...flex.col,
           width: '100%',
           height: '100%',
+          maxWidth: '100%',
+          overflow: 'auto',
         }}
       >
         {view === 'table' && table ? (
           <HTMLTable
             style={{
-              width: 'min-content',
+              width: 'max-content',
             }}
           >
             <thead
