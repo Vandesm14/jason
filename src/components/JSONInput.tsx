@@ -66,6 +66,7 @@ export function JSONInput({ onChange, onSubmit }: JSONInputProps) {
             onSubmit();
           }}
           large={true}
+          icon="build"
         />
         {isValid ? (
           <Text style={{ color: '#72CA9B' }}>Valid JSON</Text>
