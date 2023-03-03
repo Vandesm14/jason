@@ -22,7 +22,7 @@ export function QueryOutput({ result, json }: QueryOutputProps) {
       let newTable = flattenJSON(array);
 
       setTable(newTable);
-      setSchema(guessSchema(newTable));
+      setSchema(guessSchema(flattenJSON(Array.isArray(json) ? json : [json])));
     } catch (e) {
       setTable(null);
     }
