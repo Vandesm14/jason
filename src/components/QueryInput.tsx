@@ -4,6 +4,10 @@ import { flex } from '../compose/styles';
 import useLocalStorageState from 'use-local-storage-state';
 import { Button } from '@blueprintjs/core';
 import { HelpModal } from './HelpModal';
+import CodeMirror from '@uiw/react-codemirror';
+import { javascript } from '@codemirror/lang-javascript';
+import { oneDark } from '@codemirror/theme-one-dark';
+import { useResizeDetector } from 'react-resize-detector';
 
 interface QueryInputProps {
   onChange?: (result: object) => void;
@@ -11,6 +15,7 @@ interface QueryInputProps {
 }
 
 export function QueryInput({ onChange, json }: QueryInputProps) {
+  const { height, ref } = useResizeDetector();
   const [showHelp, setShowHelp] = React.useState(false);
   const [query, setQuery] = useLocalStorageState('query', {
     defaultValue: '',
@@ -40,21 +45,19 @@ export function QueryInput({ onChange, json }: QueryInputProps) {
         width: '100%',
         height: '100%',
       }}
+      ref={ref}
     >
       <HelpModal isOpen={showHelp} onClose={() => setShowHelp(false)} />
-      <textarea
+      <CodeMirror
         value={query}
-        onChange={(e) => {
-          setQuery(e.target.value);
-          handleSearch(json ?? {}, e.target.value);
+        onChange={(value) => {
+          setQuery(value);
+          handleSearch(json ?? {}, value);
         }}
-        style={{
-          width: '100%',
-          height: '100%',
-          resize: 'vertical',
-          backgroundColor: '#252A31',
-        }}
+        height={height ? `${height}px` : '100%'}
         placeholder="Use JMESPath to query your JSON"
+        extensions={[javascript()]}
+        theme={oneDark}
       />
       <div
         style={{

@@ -2,6 +2,9 @@ import React from 'react';
 import { Button, Text } from '@blueprintjs/core';
 import useLocalStorageState from 'use-local-storage-state';
 import { flex } from '../compose/styles';
+import CodeMirror from '@uiw/react-codemirror';
+import { json as jsonLang } from '@codemirror/lang-json';
+import { oneDark } from '@codemirror/theme-one-dark';
 
 interface JSONInputProps {
   onChange: (json: string) => void;
@@ -34,19 +37,16 @@ export function JSONInput({ onChange, onSubmit }: JSONInputProps) {
 
   return (
     <section>
-      <textarea
+      <CodeMirror
         value={json}
-        onChange={(e) => {
-          setJson(e.target.value);
-          handleJSONChange(e.target.value);
+        onChange={(value) => {
+          setJson(value);
+          handleJSONChange(value);
         }}
-        style={{
-          width: '100%',
-          height: '30rem',
-          resize: 'none',
-          backgroundColor: '#252A31',
-        }}
+        height="40vh"
         placeholder="Paste your JSON here"
+        extensions={[jsonLang()]}
+        theme={oneDark}
       />
       <div
         style={{
