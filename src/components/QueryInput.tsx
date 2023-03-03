@@ -54,6 +54,7 @@ export function QueryInput({ onChange, json }: QueryInputProps) {
           resize: 'vertical',
           backgroundColor: '#252A31',
         }}
+        placeholder="Use JMESPath to query your JSON"
       />
       <div
         style={{

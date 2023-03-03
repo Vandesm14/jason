@@ -46,6 +46,7 @@ export function JSONInput({ onChange, onSubmit }: JSONInputProps) {
           resize: 'none',
           backgroundColor: '#252A31',
         }}
+        placeholder="Paste your JSON here"
       />
       <div
         style={{
