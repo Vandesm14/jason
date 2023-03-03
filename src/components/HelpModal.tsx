@@ -16,13 +16,13 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
             marginTop: 0,
           }}
         >
-          Help
+          About
         </h1>
         <p>
-          This is a JSON query tool. Queries are built using{' '}
-          <a href="https://jmespath.org/tutorial.html">JMESPath</a> to search
-          through JSON data. We support almost any schema, such as an array of
-          objects or a simple object.
+          <b>Jason</b> is a JSON query visualization tool. Queries are built
+          using <a href="https://jmespath.org/tutorial.html">JMESPath</a> to
+          search through JSON data. We support almost any schema, such as an
+          array of objects, a single object, or even a single value.
         </p>
         <h2>Query Examples</h2>
         <p>
