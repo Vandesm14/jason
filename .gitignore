@@ -11,7 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
-todo.md
+
+*.priv.md
 
 # Editor directories and files
 .vscode/*
