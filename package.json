@@ -12,7 +12,7 @@
     "format:check": "prettier -c \"**/*.{ts,tsx,html}\""
   },
   "dependencies": {
-    "@blueprintjs/core": "^4.17.2",
+    "@blueprintjs/core": "^4.17.4",
     "@blueprintjs/popover2": "^1.13.8",
     "@blueprintjs/table": "^4.8.4",
     "jmespath": "^0.16.0",
@@ -24,14 +24,14 @@
   },
   "devDependencies": {
     "@types/jmespath": "^0.15.0",
-    "@types/react": "^18.0.17",
-    "@types/react-dom": "^18.0.6",
-    "@vitejs/plugin-react": "^2.1.0",
-    "eslint": "^8.24.0",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@vitejs/plugin-react": "^2.2.0",
+    "eslint": "^8.35.0",
     "eslint-plugin-unused-imports": "^2.0.0",
-    "prettier": "^2.7.1",
-    "typescript": "^4.6.4",
-    "typescript-eslint": "^0.0.1-alpha.0",
-    "vite": "^3.1.0"
+    "prettier": "^2.8.4",
+    "typescript": "^4.9.5",
+    "typescript-eslint": "0.0.1-alpha.0",
+    "vite": "^3.2.5"
   }
 }
