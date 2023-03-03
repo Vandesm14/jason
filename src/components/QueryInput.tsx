@@ -2,6 +2,8 @@ import React from 'react';
 import { search } from 'jmespath';
 import { flex } from '../compose/styles';
 import useLocalStorageState from 'use-local-storage-state';
+import { Button } from '@blueprintjs/core';
+import { HelpModal } from './HelpModal';
 
 interface QueryInputProps {
   onChange?: (result: object) => void;
@@ -9,6 +11,7 @@ interface QueryInputProps {
 }
 
 export function QueryInput({ onChange, json }: QueryInputProps) {
+  const [showHelp, setShowHelp] = React.useState(false);
   const [query, setQuery] = useLocalStorageState('query', {
     defaultValue: '',
   });
@@ -17,6 +20,7 @@ export function QueryInput({ onChange, json }: QueryInputProps) {
     if (query === '') return onChange?.(json);
 
     try {
+      // TODO: Use https://www.npmjs.com/package/@cloudelements/jmespath for adding custom functions
       const result = search(json, query);
       onChange?.(result);
     } catch (e: any) {
@@ -37,6 +41,7 @@ export function QueryInput({ onChange, json }: QueryInputProps) {
         height: '100%',
       }}
     >
+      <HelpModal isOpen={showHelp} onClose={() => setShowHelp(false)} />
       <textarea
         value={query}
         onChange={(e) => {
@@ -50,6 +55,25 @@ export function QueryInput({ onChange, json }: QueryInputProps) {
           backgroundColor: '#252A31',
         }}
       />
+      <div
+        style={{
+          ...flex.row,
+          ...flex.center,
+          width: '100%',
+          position: 'relative',
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 10,
+            right: 10,
+            zIndex: 100,
+          }}
+        >
+          <Button onClick={() => setShowHelp(true)}>Help</Button>
+        </div>
+      </div>
     </div>
   );
 }

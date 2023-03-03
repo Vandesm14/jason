@@ -47,6 +47,7 @@ export function JSONInput({ onChange, onSubmit }: JSONInputProps) {
           width: '100%',
           height: '30rem',
           resize: 'none',
+          backgroundColor: '#252A31',
         }}
       />
       <div

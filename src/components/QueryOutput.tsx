@@ -21,8 +21,6 @@ export function QueryOutput({ result, json }: QueryOutputProps) {
       let array = Array.isArray(result) ? result : [result];
       let newTable = flattenJSON(array);
 
-      console.log({ array, result, newTable });
-
       setTable(newTable);
       setSchema(guessSchema(newTable));
     } catch (e) {
