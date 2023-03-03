@@ -5,6 +5,8 @@ import { flex } from '../compose/styles';
 import { Column, flattenJSON, guessSchema } from '../json';
 import { Tooltip2 } from '@blueprintjs/popover2';
 import { ColoredValue } from './ColoredValue';
+import { JSONView } from './views/JSONView';
+import { TableView } from './views/TableView';
 
 export interface QueryOutputProps {
   result: any;
@@ -26,7 +28,8 @@ export function QueryOutput({ result, json }: QueryOutputProps) {
     try {
       const input = useQuery ? result : json;
       const array = Array.isArray(input) ? input : [input];
-      const newTable = flattenJSON(array);
+      let newTable: Column[] | null = flattenJSON(array);
+      newTable = newTable.length > 0 ? newTable : null;
 
       setTable(newTable);
       setSchema(guessSchema(flattenJSON(array)));
@@ -52,73 +55,9 @@ export function QueryOutput({ result, json }: QueryOutputProps) {
           overflowX: 'auto',
         }}
       >
-        {view === 'json' && input ? (
-          <ReactJson
-            src={input}
-            theme="google"
-            displayDataTypes={false}
-            displayObjectSize={false}
-            style={{
-              backgroundColor: '#1C2127',
-              fontFamily: 'monospace',
-              padding: '0.3rem',
-            }}
-          />
-        ) : null}
-        {view === 'table' && table && table.length > 0 ? (
-          <HTMLTable
-            style={{
-              width: 'max-content',
-              fontFamily: 'monospace',
-            }}
-          >
-            <thead
-              style={{
-                position: 'sticky',
-                backgroundColor: '#383E47',
-              }}
-            >
-              <tr>
-                <th key={0}></th>
-                {table?.map((column, i) => (
-                  <th key={i + 1}>{column.key}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {table?.[0].values.map((_, i) => (
-                <tr key={i}>
-                  <td
-                    style={{
-                      backgroundColor: '#383E47',
-                    }}
-                    key={0}
-                  >
-                    {i + 1}
-                  </td>
-                  {table?.map((column, itemIndex) => (
-                    <td key={itemIndex + 1}>
-                      <ColoredValue value={column.values[i]} />
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </HTMLTable>
-        ) : null}
-        {view === 'schema' && schema ? (
-          <ReactJson
-            src={schema}
-            theme="google"
-            displayDataTypes={false}
-            displayObjectSize={false}
-            style={{
-              backgroundColor: '#1C2127',
-              fontFamily: 'monospace',
-              padding: '0.3rem',
-            }}
-          />
-        ) : null}
+        {view === 'json' && input ? <JSONView json={input} /> : null}
+        {view === 'table' && table ? <TableView table={table} /> : null}
+        {view === 'schema' && schema ? <JSONView json={schema} /> : null}
       </div>
       <div
         style={{
