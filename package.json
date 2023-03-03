@@ -16,11 +16,11 @@
     "@blueprintjs/popover2": "^1.13.8",
     "@blueprintjs/table": "^4.8.4",
     "jmespath": "^0.16.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-json-view": "^1.21.3",
     "react-split": "^2.0.14",
-    "use-local-storage-state": "^17.2.0"
+    "use-local-storage-state": "^18.1.2"
   },
   "devDependencies": {
     "@types/jmespath": "^0.15.0",
