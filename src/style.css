@@ -3,6 +3,11 @@ html, body, div, form, fieldset, legend, label {
   padding: 0;
 }
 
+html, body, main {
+  width: 100%;
+  height: 100%;
+}
+
 body {
   background-color: #272727;
   color: #ffffff;

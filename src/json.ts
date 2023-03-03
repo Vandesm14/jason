@@ -27,3 +27,60 @@ export function flattenJSON(json: Array<Record<string, any>>): Column[] {
     .map((key) => ({ key, values: columns[key] }))
     .sort((a, b) => a.key.localeCompare(b.key));
 }
+
+//                          path  , type
+export type Schema = Record<string, string>;
+
+export function guessSchema(columns: Column[]): Schema {
+  const schema: Schema = {};
+
+  columns.forEach((column) => {
+    const { key, values } = column;
+
+    const type = guessType(values);
+
+    schema[key] = type;
+  });
+
+  return schema;
+}
+
+export function guessType(values: (any | undefined)[]): string {
+  const types = values.map((value) => {
+    if (value === undefined || value === null) {
+      return 'null';
+    }
+    if (typeof value === 'string') {
+      return 'string';
+    }
+    if (typeof value === 'number') {
+      return 'number';
+    }
+    if (typeof value === 'boolean') {
+      return 'boolean';
+    }
+    if (Array.isArray(value)) {
+      return 'array';
+    }
+    if (typeof value === 'object') {
+      return 'object';
+    }
+    return 'object';
+  });
+
+  const uniqueTypes = new Set(types);
+
+  if (uniqueTypes.size === 1) {
+    return types[0];
+  }
+
+  if (uniqueTypes.has('null')) {
+    uniqueTypes.delete('null');
+  }
+
+  if (uniqueTypes.size === 1) {
+    return `${types[0]} | null`;
+  }
+
+  return 'any';
+}

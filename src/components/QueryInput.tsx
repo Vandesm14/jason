@@ -10,10 +10,12 @@ interface QueryInputProps {
 
 export function QueryInput({ onChange, json }: QueryInputProps) {
   const [query, setQuery] = useLocalStorageState('query', {
-    defaultValue: '*',
+    defaultValue: '',
   });
 
   const handleSearch = (json: object, query: string) => {
+    if (query === '') return onChange?.(json);
+
     try {
       const result = search(json, query);
       onChange?.(result);

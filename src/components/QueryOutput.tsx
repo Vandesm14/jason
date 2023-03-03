@@ -2,17 +2,19 @@ import { Button, HTMLTable } from '@blueprintjs/core';
 import React from 'react';
 import ReactJson from 'react-json-view';
 import { flex } from '../compose/styles';
-import { Column, flattenJSON } from '../json';
+import { Column, flattenJSON, guessSchema } from '../json';
 import { Tooltip2 } from '@blueprintjs/popover2';
 import { ColoredValue } from './ColoredValue';
 
 export interface QueryOutputProps {
   result: any;
+  json?: object;
 }
 
-export function QueryOutput({ result }: QueryOutputProps) {
-  const [isTable, setIsTable] = React.useState(false);
+export function QueryOutput({ result, json }: QueryOutputProps) {
+  const [view, setView] = React.useState<'json' | 'table' | 'schema'>('json');
   const [table, setTable] = React.useState<Column[] | null>(null);
+  const [schema, setSchema] = React.useState<any>({});
 
   React.useEffect(() => {
     try {
@@ -21,60 +23,83 @@ export function QueryOutput({ result }: QueryOutputProps) {
 
       let newTable = flattenJSON(result);
 
-      console.log(newTable);
       setTable(newTable);
+      setSchema(guessSchema(newTable));
     } catch {
       setTable(null);
     }
-  }, [result]);
+  }, [result, json]);
 
   return (
-    <>
-      {isTable && table ? (
-        <HTMLTable
-          style={{
-            width: 'min-content',
-          }}
-        >
-          <thead
+    <section
+      style={{
+        ...flex.col,
+        width: '100%',
+        height: '100%',
+      }}
+    >
+      <div
+        style={{
+          ...flex.col,
+          width: '100%',
+          height: '100%',
+        }}
+      >
+        {view === 'table' && table ? (
+          <HTMLTable
             style={{
-              position: 'sticky',
-              backgroundColor: '#383E47',
+              width: 'min-content',
             }}
           >
-            <th></th>
-            {table?.map((column) => (
-              <th key={column.key}>{column.key}</th>
-            ))}
-          </thead>
-          <tbody>
-            {table?.[0].values.map((_, i) => (
-              <tr>
-                <td
-                  style={{
-                    backgroundColor: '#383E47',
-                  }}
-                  key={0}
-                >
-                  {i + 1}
-                </td>
-                {table?.map((column, itemIndex) => (
-                  <td key={itemIndex + 1}>
-                    <ColoredValue value={column.values[i]} />
+            <thead
+              style={{
+                position: 'sticky',
+                backgroundColor: '#383E47',
+              }}
+            >
+              <th></th>
+              {table?.map((column) => (
+                <th key={column.key}>{column.key}</th>
+              ))}
+            </thead>
+            <tbody>
+              {table?.[0].values.map((_, i) => (
+                <tr>
+                  <td
+                    style={{
+                      backgroundColor: '#383E47',
+                    }}
+                    key={0}
+                  >
+                    {i + 1}
                   </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </HTMLTable>
-      ) : (
-        <ReactJson
-          src={result}
-          theme="google"
-          displayDataTypes={false}
-          displayObjectSize={false}
-        />
-      )}
+                  {table?.map((column, itemIndex) => (
+                    <td key={itemIndex + 1}>
+                      <ColoredValue value={column.values[i]} />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </HTMLTable>
+        ) : null}
+        {view === 'json' && result ? (
+          <ReactJson
+            src={result}
+            theme="google"
+            displayDataTypes={false}
+            displayObjectSize={false}
+          />
+        ) : null}
+        {view === 'schema' && json ? (
+          <ReactJson
+            src={schema}
+            theme="google"
+            displayDataTypes={false}
+            displayObjectSize={false}
+          />
+        ) : null}
+      </div>
       <div
         style={{
           ...flex.row,
@@ -82,8 +107,12 @@ export function QueryOutput({ result }: QueryOutputProps) {
           width: '100%',
         }}
       >
-        <div>
-          <Button onClick={() => setIsTable(false)} active={isTable}>
+        <div
+          style={{
+            padding: '1rem',
+          }}
+        >
+          <Button onClick={() => setView('json')} active={view === 'json'}>
             JSON
           </Button>
           <Tooltip2
@@ -94,15 +123,18 @@ export function QueryOutput({ result }: QueryOutputProps) {
             }
           >
             <Button
-              onClick={() => setIsTable(true)}
-              active={!isTable}
+              onClick={() => setView('table')}
+              active={view === 'table'}
               disabled={table === null}
             >
               Table
             </Button>
           </Tooltip2>
+          <Button onClick={() => setView('schema')} active={view === 'schema'}>
+            Schema
+          </Button>
         </div>
       </div>
-    </>
+    </section>
   );
 }

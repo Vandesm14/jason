@@ -28,7 +28,7 @@ function App() {
     >
       <JSONModal onChange={handleJSONChange} />
       <QueryInput json={json} onChange={(json) => setResult(json)} />
-      <QueryOutput result={result} />
+      <QueryOutput result={result} json={json} />
     </main>
   );
 }
