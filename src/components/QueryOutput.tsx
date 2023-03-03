@@ -43,7 +43,7 @@ export function QueryOutput({ result, json }: QueryOutputProps) {
           width: '100%',
           height: '100%',
           maxWidth: '100%',
-          overflow: 'auto',
+          overflowX: 'auto',
         }}
       >
         {view === 'table' && table ? (
@@ -92,8 +92,9 @@ export function QueryOutput({ result, json }: QueryOutputProps) {
             displayDataTypes={false}
             displayObjectSize={false}
             style={{
-              backgroundColor: '#272727',
+              backgroundColor: '#1C2127',
               fontFamily: 'monospace',
+              padding: '0.3rem',
             }}
           />
         ) : null}
@@ -104,8 +105,9 @@ export function QueryOutput({ result, json }: QueryOutputProps) {
             displayDataTypes={false}
             displayObjectSize={false}
             style={{
-              backgroundColor: '#272727',
+              backgroundColor: '#1C2127',
               fontFamily: 'monospace',
+              padding: '0.3rem',
             }}
           />
         ) : null}
@@ -120,7 +122,7 @@ export function QueryOutput({ result, json }: QueryOutputProps) {
       >
         <div
           style={{
-            position: 'absolute',
+            position: 'fixed',
             bottom: 10,
           }}
         >

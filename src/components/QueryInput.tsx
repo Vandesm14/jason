@@ -47,6 +47,7 @@ export function QueryInput({ onChange, json }: QueryInputProps) {
           width: '100%',
           height: '100%',
           resize: 'vertical',
+          backgroundColor: '#252A31',
         }}
       />
     </div>
