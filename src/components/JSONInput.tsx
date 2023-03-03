@@ -27,12 +27,9 @@ export function JSONInput({ onChange, onSubmit }: JSONInputProps) {
   };
 
   React.useEffect(() => {
-    // If the value exists in local storage, we don't want to open the modal
-    if (handleJSONChange(json)) {
-      onChange(json);
-    } else {
-      onSubmit();
-    }
+    // If the value exists in local storage, use it
+    handleJSONChange(json);
+    onChange(json);
   }, []);
 
   return (
