@@ -35,6 +35,7 @@ function App() {
           ...flex.col,
           width: '100%',
           height: '100%',
+          overflow: 'hidden',
         }}
       >
         <QueryInput json={json} onChange={(json) => setResult(json)} />

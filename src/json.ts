@@ -8,7 +8,14 @@ export function flattenJSON(
 ): { key: string; values: string[] }[] {
   const columns: { [key: string]: any[] } = {};
 
-  function flattenObject(obj: Record<string, any>, prefix = ''): void {
+  function flattenObject(obj: any, prefix = ''): void {
+    if (typeof obj !== 'object' || Array.isArray(obj)) {
+      prefix ||= 'value';
+      if (!columns[prefix]) columns[prefix] = [];
+      columns[prefix].push(obj);
+      return;
+    }
+
     Object.entries(obj).forEach(([key, value]) => {
       const fullKey = prefix ? `${prefix}.${key}` : key;
 
@@ -18,14 +25,6 @@ export function flattenJSON(
         !Array.isArray(value)
       ) {
         flattenObject(value, fullKey);
-        // } else {
-        // const stringValue = Array.isArray(value)
-        //   ? JSON.stringify(value)
-        //   : value?.toString();
-        // if (!columns[fullKey]) {
-        //   columns[fullKey] = [];
-        // }
-        // columns[fullKey].push(stringValue);
       } else if (Array.isArray(value)) {
         if (!columns[fullKey]) columns[fullKey] = [];
         columns[fullKey].push(value);

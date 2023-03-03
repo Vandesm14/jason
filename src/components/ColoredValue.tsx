@@ -1,3 +1,4 @@
+import { Tooltip2 } from '@blueprintjs/popover2';
 import React from 'react';
 
 interface ColoredValueProps {
@@ -12,6 +13,11 @@ const blue = '#4C90F0';
 const canBeNumber = (value: any) => {
   if (typeof value === 'number') return true;
   if (typeof value === 'string') return !isNaN(Number(value));
+  return false;
+};
+
+const canBeDate = (value: any) => {
+  if (typeof value === 'string') return !isNaN(Date.parse(value));
   return false;
 };
 
@@ -30,5 +36,11 @@ export function ColoredValue({ value }: ColoredValueProps) {
     return value;
   }, [value]);
 
-  return <span style={{ color }}>{stringified}</span>;
+  return canBeDate(value) ? (
+    <Tooltip2 content={new Date(value).toLocaleString()}>
+      <span style={{ color }}>{stringified}</span>
+    </Tooltip2>
+  ) : (
+    <span style={{ color }}>{stringified}</span>
+  );
 }

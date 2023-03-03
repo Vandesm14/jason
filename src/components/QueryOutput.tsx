@@ -21,10 +21,11 @@ export function QueryOutput({ result, json }: QueryOutputProps) {
       let array = Array.isArray(result) ? result : [result];
       let newTable = flattenJSON(array);
 
+      console.log({ array, result, newTable });
+
       setTable(newTable);
       setSchema(guessSchema(newTable));
     } catch (e) {
-      console.error(e);
       setTable(null);
     }
   }, [result, json]);
@@ -46,7 +47,7 @@ export function QueryOutput({ result, json }: QueryOutputProps) {
           overflowX: 'auto',
         }}
       >
-        {view === 'table' && table ? (
+        {view === 'table' && table && table.length > 0 ? (
           <HTMLTable
             style={{
               width: 'max-content',
@@ -59,14 +60,16 @@ export function QueryOutput({ result, json }: QueryOutputProps) {
                 backgroundColor: '#383E47',
               }}
             >
-              <th></th>
-              {table?.map((column) => (
-                <th key={column.key}>{column.key}</th>
-              ))}
+              <tr>
+                <th key={0}></th>
+                {table?.map((column, i) => (
+                  <th key={i + 1}>{column.key}</th>
+                ))}
+              </tr>
             </thead>
             <tbody>
               {table?.[0].values.map((_, i) => (
-                <tr>
+                <tr key={i}>
                   <td
                     style={{
                       backgroundColor: '#383E47',
