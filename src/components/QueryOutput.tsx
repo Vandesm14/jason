@@ -1,5 +1,5 @@
-import { Button, HTMLTable } from '@blueprintjs/core';
-import React from 'react';
+import { Button, HTMLTable, Switch } from '@blueprintjs/core';
+import React, { ChangeEvent } from 'react';
 import ReactJson from 'react-json-view';
 import { flex } from '../compose/styles';
 import { Column, flattenJSON, guessSchema } from '../json';
@@ -12,21 +12,28 @@ export interface QueryOutputProps {
 }
 
 export function QueryOutput({ result, json }: QueryOutputProps) {
+  const [useQuery, setUseQuery] = React.useState(true);
+
   const [view, setView] = React.useState<'json' | 'table' | 'schema'>('json');
   const [table, setTable] = React.useState<Column[] | null>(null);
   const [schema, setSchema] = React.useState<any>({});
 
+  const input = React.useMemo(() => {
+    return useQuery ? result : json;
+  }, [useQuery, result, json]);
+
   React.useEffect(() => {
     try {
-      let array = Array.isArray(result) ? result : [result];
-      let newTable = flattenJSON(array);
+      const input = useQuery ? result : json;
+      const array = Array.isArray(input) ? input : [input];
+      const newTable = flattenJSON(array);
 
       setTable(newTable);
-      setSchema(guessSchema(flattenJSON(Array.isArray(json) ? json : [json])));
+      setSchema(guessSchema(flattenJSON(array)));
     } catch (e) {
       setTable(null);
     }
-  }, [result, json]);
+  }, [result, json, useQuery]);
 
   return (
     <section
@@ -45,6 +52,19 @@ export function QueryOutput({ result, json }: QueryOutputProps) {
           overflowX: 'auto',
         }}
       >
+        {view === 'json' && input ? (
+          <ReactJson
+            src={input}
+            theme="google"
+            displayDataTypes={false}
+            displayObjectSize={false}
+            style={{
+              backgroundColor: '#1C2127',
+              fontFamily: 'monospace',
+              padding: '0.3rem',
+            }}
+          />
+        ) : null}
         {view === 'table' && table && table.length > 0 ? (
           <HTMLTable
             style={{
@@ -86,20 +106,7 @@ export function QueryOutput({ result, json }: QueryOutputProps) {
             </tbody>
           </HTMLTable>
         ) : null}
-        {view === 'json' && result ? (
-          <ReactJson
-            src={result}
-            theme="google"
-            displayDataTypes={false}
-            displayObjectSize={false}
-            style={{
-              backgroundColor: '#1C2127',
-              fontFamily: 'monospace',
-              padding: '0.3rem',
-            }}
-          />
-        ) : null}
-        {view === 'schema' && json ? (
+        {view === 'schema' && schema ? (
           <ReactJson
             src={schema}
             theme="google"
@@ -148,6 +155,24 @@ export function QueryOutput({ result, json }: QueryOutputProps) {
           <Button onClick={() => setView('schema')} active={view === 'schema'}>
             Schema
           </Button>
+        </div>
+        <div
+          style={{
+            position: 'fixed',
+            bottom: 0,
+            right: 10,
+            zIndex: 100,
+          }}
+        >
+          <Switch
+            label={useQuery ? 'Query' : 'Original'}
+            large={true}
+            alignIndicator="right"
+            checked={useQuery}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setUseQuery(e.target.checked)
+            }
+          />
         </div>
       </div>
     </section>
