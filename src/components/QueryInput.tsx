@@ -33,6 +33,8 @@ export function QueryInput({ onChange, json }: QueryInputProps) {
     <div
       style={{
         ...flex.col,
+        width: '100%',
+        height: '100%',
       }}
     >
       <textarea
@@ -43,7 +45,7 @@ export function QueryInput({ onChange, json }: QueryInputProps) {
         }}
         style={{
           width: '100%',
-          height: '10rem',
+          height: '100%',
           resize: 'vertical',
         }}
       />

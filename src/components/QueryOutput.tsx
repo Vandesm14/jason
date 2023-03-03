@@ -50,6 +50,7 @@ export function QueryOutput({ result, json }: QueryOutputProps) {
           <HTMLTable
             style={{
               width: 'max-content',
+              fontFamily: 'monospace',
             }}
           >
             <thead
@@ -90,6 +91,10 @@ export function QueryOutput({ result, json }: QueryOutputProps) {
             theme="google"
             displayDataTypes={false}
             displayObjectSize={false}
+            style={{
+              backgroundColor: '#272727',
+              fontFamily: 'monospace',
+            }}
           />
         ) : null}
         {view === 'schema' && json ? (
@@ -98,6 +103,10 @@ export function QueryOutput({ result, json }: QueryOutputProps) {
             theme="google"
             displayDataTypes={false}
             displayObjectSize={false}
+            style={{
+              backgroundColor: '#272727',
+              fontFamily: 'monospace',
+            }}
           />
         ) : null}
       </div>
@@ -106,11 +115,13 @@ export function QueryOutput({ result, json }: QueryOutputProps) {
           ...flex.row,
           ...flex.center,
           width: '100%',
+          position: 'relative',
         }}
       >
         <div
           style={{
-            padding: '1rem',
+            position: 'absolute',
+            bottom: 10,
           }}
         >
           <Button onClick={() => setView('json')} active={view === 'json'}>
