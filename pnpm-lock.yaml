@@ -17,6 +17,7 @@ specifiers:
   '@typescript-eslint/parser': ^5.54.0
   '@uiw/react-codemirror': ^4.19.9
   '@vitejs/plugin-react': ^2.2.0
+  chart.js: ^4.2.1
   codemirror: ^6.0.1
   eslint: ^8.35.0
   eslint-plugin-unused-imports: ^2.0.0
@@ -24,6 +25,7 @@ specifiers:
   lezer: ^0.13.5
   prettier: ^2.8.4
   react: ^18.2.0
+  react-chartjs-2: ^5.2.0
   react-dom: ^18.2.0
   react-json-view: ^1.21.3
   react-resize-detector: ^8.0.4
@@ -44,10 +46,12 @@ dependencies:
   '@lezer/common': 1.0.2
   '@lezer/lr': 1.3.3
   '@uiw/react-codemirror': 4.19.9_zev3e7gru6oskgvc7au72quazq
+  chart.js: 4.2.1
   codemirror: 6.0.1_@lezer+common@1.0.2
   jmespath: 0.16.0
   lezer: 0.13.5
   react: 18.2.0
+  react-chartjs-2: 5.2.0_t5yjg6ab35jnsudnh2qdighszm
   react-dom: 18.2.0_react@18.2.0
   react-json-view: 1.21.3_zula6vjvt3wdocc4mwcxqa6nzi
   react-resize-detector: 8.0.4_biqbaboplfbrettd7655fr4n2y
@@ -630,6 +634,10 @@ packages:
     resolution: {integrity: sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==}
     dev: false
 
+  /@kurkle/color/0.3.2:
+    resolution: {integrity: sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==}
+    dev: false
+
   /@lezer/common/1.0.2:
     resolution: {integrity: sha512-SVgiGtMnMnW3ActR8SXgsDhw7a0w0ChHSYAyAUxxrOiJ1OqYWEKk/xJd84tTSPo1mo6DXLObAJALNnd0Hrv7Ng==}
     dev: false
@@ -1057,6 +1065,13 @@ packages:
       sentence-case: 3.0.4
       snake-case: 3.0.4
       tslib: 2.3.1
+    dev: false
+
+  /chart.js/4.2.1:
+    resolution: {integrity: sha512-6YbpQ0nt3NovAgOzbkSSeeAQu/3za1319dPUQTXn9WcOpywM8rGKxJHrhS8V8xEkAlk8YhEfjbuAPfUyp6jIsw==}
+    engines: {pnpm: ^7.0.0}
+    dependencies:
+      '@kurkle/color': 0.3.2
     dev: false
 
   /classnames/2.3.2:
@@ -2241,6 +2256,16 @@ packages:
       lodash.curry: 4.1.1
       lodash.flow: 3.5.0
       pure-color: 1.3.0
+    dev: false
+
+  /react-chartjs-2/5.2.0_t5yjg6ab35jnsudnh2qdighszm:
+    resolution: {integrity: sha512-98iN5aguJyVSxp5U3CblRLH67J8gkfyGNbiK3c+l1QI/G4irHMPQw44aEPmjVag+YKTyQ260NcF82GTQ3bdscA==}
+    peerDependencies:
+      chart.js: ^4.1.1
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      chart.js: 4.2.1
+      react: 18.2.0
     dev: false
 
   /react-dom/18.2.0_react@18.2.0:

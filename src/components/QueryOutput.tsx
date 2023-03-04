@@ -1,12 +1,12 @@
-import { Button, HTMLTable, Switch } from '@blueprintjs/core';
+import { Button, Switch } from '@blueprintjs/core';
 import React, { ChangeEvent } from 'react';
-import ReactJson from 'react-json-view';
 import { flex } from '../compose/styles';
 import { Column, flattenJSON, guessSchema } from '../json';
 import { Tooltip2 } from '@blueprintjs/popover2';
-import { ColoredValue } from './ColoredValue';
 import { JSONView } from './views/JSONView';
 import { TableView } from './views/TableView';
+import { ChartView } from './views/ChartView';
+import { useResizeDetector } from 'react-resize-detector';
 
 export interface QueryOutputProps {
   result: any;
@@ -14,9 +14,12 @@ export interface QueryOutputProps {
 }
 
 export function QueryOutput({ result, json }: QueryOutputProps) {
+  const { ref, height } = useResizeDetector<HTMLDivElement>();
   const [useQuery, setUseQuery] = React.useState(true);
 
-  const [view, setView] = React.useState<'json' | 'table' | 'schema'>('json');
+  const [view, setView] = React.useState<'json' | 'table' | 'schema' | 'chart'>(
+    'json'
+  );
   const [table, setTable] = React.useState<Column[] | null>(null);
   const [schema, setSchema] = React.useState<any>({});
 
@@ -45,6 +48,7 @@ export function QueryOutput({ result, json }: QueryOutputProps) {
         width: '100%',
         height: '100%',
       }}
+      ref={ref}
     >
       <div
         style={{
@@ -58,6 +62,9 @@ export function QueryOutput({ result, json }: QueryOutputProps) {
         {view === 'json' && input ? <JSONView json={input} /> : null}
         {view === 'table' && table ? <TableView table={table} /> : null}
         {view === 'schema' && schema ? <JSONView json={schema} /> : null}
+        {view === 'chart' && input ? (
+          <ChartView data={input} height={height ?? 0} />
+        ) : null}
       </div>
       <div
         style={{
@@ -93,6 +100,9 @@ export function QueryOutput({ result, json }: QueryOutputProps) {
           </Tooltip2>
           <Button onClick={() => setView('schema')} active={view === 'schema'}>
             Schema
+          </Button>
+          <Button onClick={() => setView('chart')} active={view === 'chart'}>
+            Chart
           </Button>
         </div>
         <div

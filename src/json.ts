@@ -42,6 +42,24 @@ export function flattenJSON(
   return Object.keys(columns).map((key) => ({ key, values: columns[key] }));
 }
 
+export function fromPath(path: string, obj: any): any {
+  const parts = path.split('.');
+
+  let value = obj;
+
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i];
+
+    if (value[part] === undefined) {
+      return undefined;
+    }
+
+    value = value[part];
+  }
+
+  return value;
+}
+
 //                          path  , type
 export type Schema = Record<string, string>;
 
