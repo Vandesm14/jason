@@ -23,3 +23,7 @@ export interface StyledComponentProps {
   className?: string;
   style?: React.CSSProperties;
 }
+
+export interface StyledComponentPropsWithChildren extends StyledComponentProps {
+  children?: React.ReactNode;
+}

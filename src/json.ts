@@ -42,6 +42,11 @@ export function flattenJSON(
   return Object.keys(columns).map((key) => ({ key, values: columns[key] }));
 }
 
+export function getAllKeys(json: Record<string, any>[]): string[] {
+  const res = flattenJSON(json);
+  return res.map((column) => column.key);
+}
+
 export function fromPath(path: string, obj: any): any {
   const parts = path.split('.');
 
